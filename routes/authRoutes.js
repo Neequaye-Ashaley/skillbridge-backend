@@ -12,6 +12,9 @@ const getClientUrl = () => process.env.CLIENT_URL || 'http://localhost:3000';
 
 // Google OAuth routes
 router.get('/google', (req, res, next) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+        return res.redirect(`${getClientUrl()}/login?error=${encodeURIComponent('Google login is not configured yet.')}`);
+    }
     const { role } = req.query;
     // Store the role in session for use in the callback
     if (role) {
